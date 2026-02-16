@@ -37,7 +37,7 @@
 #include <Servo.h>
 
 
-Servo myServo0;
+Servo Ocs;
 
 
 
@@ -47,10 +47,14 @@ const byte SX1509_ADDRESS = 0x3E; // SX1509 I2C address
 SX1509 io;                        // Create an SX1509 object to be used throughout
 
 // SX1509 Pin definition:
-const byte SX1509_LED_PIN = 12; // LED to SX1509's pin 12
+const byte SX1509_LED_PIN_12 = 12; // LED to SX1509's pin 12write
+
+const byte SX1509_LED_PIN_15 = 15;
+const byte SX1509_LED_PIN_8 = 8;
 
 void setup()
 {
+ 
   Serial.begin(9600);
   Serial.println("SX1509 Example");
 
@@ -64,11 +68,24 @@ void setup()
     while (1)
       ; // If we fail to communicate, loop forever. doesn't work
   }
+  pinMode(7, OUTPUT);
+  Ocs.attach (7);
+  Ocs.writeMicroseconds (20000);
+  
 
   // Use the pinMode(<pin>, <mode>) function to set our led
   // pin as an ANALOG_OUTPUT, which is required for PWM output
-  io.pinMode(SX1509_LED_PIN, ANALOG_OUTPUT);
+  io.pinMode(SX1509_LED_PIN_8, ANALOG_OUTPUT);
+  io.pinMode(SX1509_LED_PIN_15, ANALOG_OUTPUT);
+
+  io.ledDriverInit(SX1509_LED_PIN_12,2);
+  io.ledDriverInit(SX1509_LED_PIN_8,2);
+
   
+
+  //io.setupBlink(SX1509_LED_PIN_12, 1000, 1000);
+
+
 }
 
 int calculate_duty_cycle(int percentage)
@@ -76,47 +93,85 @@ int calculate_duty_cycle(int percentage)
   return 100 / percentage;
 }
 
-//void duty_cycle_50 ()
-//{
-  //for (int x = 0; x<= 10; x++) { 
-  //  io.analogWrite(SX1509_LED_PIN, 1023);
-    //delay (10);
-    //io.analogWrite(SX1509_LED_PIN, 0);
-    //delay (10);
-
-//}
-void duty (int value)
+void duty (int value, byte pin)
 {
   int on_time = value * 200; // ,ocrpsec
   for (int x = 0; x <= 200; x++) { 
-    io.analogWrite(SX1509_LED_PIN, 1023); 
+    io.analogWrite(pin, 1023); 
     delayMicroseconds(on_time);              // 1.5ms
-    io.analogWrite(SX1509_LED_PIN, 0);    
+    io.analogWrite(pin, 0);    
     delayMicroseconds(20000 - on_time);
                  // 18.5ms (Totale 20ms)
   };
   Serial.println (on_time);
 
 }
+
+//angolo da 0 a 16, upmaxmin intervallo in ms up,
+//analogwriteup pin 1 e 2 fino a upmin
+//analogwritedown su pin relativo a upmin
+//analogwritedown su entrambi pin
+//fine periodo 200ms, torna all'inizio
+//quante cose si possono mettere fuori dal loop?
+//magari fare conti e ordine variabili fuori da loop e inserire solo logica gia ordinata nel loop
+void duty2 (int angle1, int angle2, byte pin1, byte pin2)
+{
+  int dutyMin = 1;
+  int upMax = 16+angle2;
+  int upMin = 16+angle1;
+
+  if (angle1 > angle2) {
+    dutyMin = 2;
+  }
+
+  if (dutyMin == 2) {
+    //swap upMin upMax
+  }
+
+
+  int period= 200;
+  for (int x =0; x<200; x++)  {
+    
+  }
+}
+
 void angle (int value)
 {
-  int duty = (value *45)
+  int duty = (value *45);
 }
 
 
 
-void loop()
-{  
+void loop() {
+
+
+    io.analogWrite(SX1509_LED_PIN_12, 50);
+    io.analogWrite(SX1509_LED_PIN_8, 50);
+  delay(1000);
+  io.analogWrite(SX1509_LED_PIN_12, 150);
+  io.analogWrite(SX1509_LED_PIN_8, 150);
+  delay(1000);
+  io.analogWrite(SX1509_LED_PIN_12, 100);
+  io.analogWrite(SX1509_LED_PIN_12, 100);
+    delay(1000);
+}
+
+//blink ()
+
+/*{  
 
 
   Serial.println ("CIAO");
   
-  duty (8);
+  duty (8, SX1509_LED_PIN_12);
+  duty (8, SX1509_LED_PIN_15);
   delay (1000);
-  duty (12);
+  duty (12, SX1509_LED_PIN_15);
+  duty (12, SX1509_LED_PIN_12);
   delay (1000);
-  duty (16);
+  duty (16, SX1509_LED_PIN_15);
+  duty (16, SX1509_LED_PIN_12);
   delay (1000);
   
-
-}
+//
+}*/
