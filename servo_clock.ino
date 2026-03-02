@@ -60,6 +60,10 @@ void setup()
 
   Wire.begin();
 
+
+
+  
+
   // Call io.begin(<address>) to initialize the SX1509. If it
   // successfully communicates, it'll return 1.
   if (io.begin(SX1509_ADDRESS) == false)
@@ -68,18 +72,23 @@ void setup()
     while (1)
       ; // If we fail to communicate, loop forever. doesn't work
   }
-  pinMode(7, OUTPUT);
-  Ocs.attach (7);
-  Ocs.writeMicroseconds (20000);
+
+    Serial.println("Before setting ext clock");
+  io.clock(EXTERNAL_CLOCK);
+  Serial.println("After setting ext clock");
+  pinMode(10, OUTPUT);
+  // tone(9, 1000, 0);
+  Ocs.attach (10);
+  Ocs.writeMicroseconds (10000);
   
 
   // Use the pinMode(<pin>, <mode>) function to set our led
   // pin as an ANALOG_OUTPUT, which is required for PWM output
   io.pinMode(SX1509_LED_PIN_8, ANALOG_OUTPUT);
-  io.pinMode(SX1509_LED_PIN_15, ANALOG_OUTPUT);
+  io.pinMode(SX1509_LED_PIN_12, ANALOG_OUTPUT);
 
-  io.ledDriverInit(SX1509_LED_PIN_12,2);
-  io.ledDriverInit(SX1509_LED_PIN_8,2);
+  io.ledDriverInit(SX1509_LED_PIN_12,4);
+  io.ledDriverInit(SX1509_LED_PIN_8,4);
 
   
 
@@ -147,12 +156,15 @@ void loop() {
 
     io.analogWrite(SX1509_LED_PIN_12, 50);
     io.analogWrite(SX1509_LED_PIN_8, 50);
+  // Ocs.write(0);
   delay(1000);
   io.analogWrite(SX1509_LED_PIN_12, 150);
   io.analogWrite(SX1509_LED_PIN_8, 150);
+  // Ocs.write(90);
   delay(1000);
   io.analogWrite(SX1509_LED_PIN_12, 100);
-  io.analogWrite(SX1509_LED_PIN_12, 100);
+   io.analogWrite(SX1509_LED_PIN_8, 100);
+  // Ocs.write(180);
     delay(1000);
 }
 
