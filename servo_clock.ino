@@ -34,10 +34,11 @@
 
 #include <Wire.h>           // Include the I2C library (required)
 #include <SparkFunSX1509.h> //Click here for the library: http://librarymanager/All#SparkFun_SX1509
-#include <Servo.h>
+// #include <Servo.h>
 
 
-Servo Ocs;
+
+// Servo Ocs;
 
 
 
@@ -47,11 +48,25 @@ const byte SX1509_ADDRESS = 0x3E; // SX1509 I2C address
 SX1509 io;                        // Create an SX1509 object to be used throughout
 
 // SX1509 Pin definition:
-const byte SX1509_LED_PIN_12 = 12; // LED to SX1509's pin 12write
 
-const byte SX1509_LED_PIN_15 = 15;
-const byte SX1509_LED_PIN_8 = 8;
+const byte SX1509_LED_PIN_8  =  8;
+const byte SX1509_LED_PIN_9  =  9;
+const byte SX1509_LED_PIN_10 = 10;
+const byte SX1509_LED_PIN_11 = 11;
+const byte SX1509_LED_PIN_12 = 12;
+const byte SX1509_LED_PIN_13 = 13;
+const byte SX1509_LED_PIN_14 = 14;
 
+const byte clock_arms[] = {
+  SX1509_LED_PIN_8,
+  SX1509_LED_PIN_9,
+  SX1509_LED_PIN_10,
+  SX1509_LED_PIN_11,
+  SX1509_LED_PIN_12,
+  SX1509_LED_PIN_13,
+  SX1509_LED_PIN_14
+};
+const int num_arms = sizeof(clock_arms) / sizeof(clock_arms[0]);
 void setup()
 {
  
@@ -73,22 +88,29 @@ void setup()
       ; // If we fail to communicate, loop forever. doesn't work
   }
 
-    Serial.println("Before setting ext clock");
-  io.clock(EXTERNAL_CLOCK);
-  Serial.println("After setting ext clock");
-  pinMode(10, OUTPUT);
+  //   Serial.println("Before setting ext clock");
+  // io.clock(EXTERNAL_CLOCK);
+  // Serial.println("After setting ext clock");
+  // pinMode(10, OUTPUT);
   // tone(9, 1000, 0);
-  Ocs.attach (10);
-  Ocs.writeMicroseconds (10000);
+  // Ocs.attach (10);
+  // Ocs.writeMicroseconds (10000);
   
 
   // Use the pinMode(<pin>, <mode>) function to set our led
   // pin as an ANALOG_OUTPUT, which is required for PWM output
-  io.pinMode(SX1509_LED_PIN_8, ANALOG_OUTPUT);
-  io.pinMode(SX1509_LED_PIN_12, ANALOG_OUTPUT);
-
-  io.ledDriverInit(SX1509_LED_PIN_12,4);
-  io.ledDriverInit(SX1509_LED_PIN_8,4);
+  for(int i=0; i<num_arms;i++){
+    io.pinMode(clock_arms[i], ANALOG_OUTPUT);
+    io.ledDriverInit(clock_arms[i],4);
+    // Serial.println("After setting ext clock");
+  }
+  // io.pinMode(SX1509_LED_PIN_8, ANALOG_OUTPUT);
+  // io.pinMode(SX1509_LED_PIN_12, ANALOG_OUTPUT);
+  // io.pinMode(SX1509_LED_PIN_9, ANALOG_OUTPUT);
+  //
+  // io.ledDriverInit(SX1509_LED_PIN_8,4);
+  // io.ledDriverInit(SX1509_LED_PIN_9,4);
+  // io.ledDriverInit(SX1509_LED_PIN_12,4);
 
   
 
@@ -154,18 +176,45 @@ void angle (int value)
 void loop() {
 
 
-    io.analogWrite(SX1509_LED_PIN_12, 50);
-    io.analogWrite(SX1509_LED_PIN_8, 50);
-  // Ocs.write(0);
+  const byte off = 20;
+  const byte on_left = 150;
+
+
+  //12 buttom left
+  // io.analogWrite(SX1509_LED_PIN_12, 50);
+  // io.analogWrite(SX1509_LED_PIN_8, 50);
+  // io.analogWrite(SX1509_LED_PIN_9, 50);
+  // // Ocs.write(0);
+  // delay(1000);
+
+  //on buttom left
+  for(int i=0; i<num_arms; i++){
+    io.analogWrite(clock_arms[i], on_left);
+    // delay(50);
+  }
+
   delay(1000);
-  io.analogWrite(SX1509_LED_PIN_12, 150);
-  io.analogWrite(SX1509_LED_PIN_8, 150);
+  for(int i=0; i<num_arms; i++){
+    io.analogWrite(clock_arms[i], off);
+    // delay(50);
+  }
+  delay(1000);
+  // io.analogWrite(SX1509_LED_PIN_12, on_left);
+  //
+  // // io.analogWrite(SX1509_LED_PIN_8, 255-on_left);
+  // io.analogWrite(SX1509_LED_PIN_8, on_left);
+  //
+  // io.analogWrite(SX1509_LED_PIN_9, on_left);
   // Ocs.write(90);
-  delay(1000);
-  io.analogWrite(SX1509_LED_PIN_12, 100);
-   io.analogWrite(SX1509_LED_PIN_8, 100);
-  // Ocs.write(180);
-    delay(1000);
+
+
+  // io.analogWrite(SX1509_LED_PIN_12, off);
+  //
+  // io.analogWrite(SX1509_LED_PIN_8, off);
+  //
+  // io.analogWrite(SX1509_LED_PIN_9, off);
+  // // Ocs.write(180);
+  //   delay(1000);
 }
 
 //blink ()
