@@ -1,4 +1,4 @@
-/*************************************************************
+  /*************************************************************
   analogWrite.ino
   SparkFun SX1509 I/O Expander Example: pwm output (analogWrite)
   Jim Lindblom @ SparkFun Electronics
@@ -66,6 +66,11 @@ const byte clock_arms[] = {
   SX1509_LED_PIN_13,
   SX1509_LED_PIN_14
 };
+
+const byte on_left = 150;
+const byte off = 20;
+
+
 const int num_arms = sizeof(clock_arms) / sizeof(clock_arms[0]);
 void setup()
 {
@@ -172,6 +177,139 @@ void angle (int value)
 }
 
 
+void one()
+{
+
+
+  io.analogWrite(SX1509_LED_PIN_13, on_left);
+  io.analogWrite(SX1509_LED_PIN_14, on_left);
+
+  io.analogWrite(SX1509_LED_PIN_8, off);
+  io.analogWrite(SX1509_LED_PIN_9, off);
+  io.analogWrite(SX1509_LED_PIN_10, off);
+  io.analogWrite(SX1509_LED_PIN_11, off);
+  io.analogWrite(SX1509_LED_PIN_12, off);
+
+}
+void due()
+{
+
+
+  io.analogWrite(SX1509_LED_PIN_8, on_left);
+  io.analogWrite(SX1509_LED_PIN_10, on_left);
+  io.analogWrite(SX1509_LED_PIN_12, on_left);
+  io.analogWrite(SX1509_LED_PIN_11, on_left);
+  io.analogWrite(SX1509_LED_PIN_14, on_left);
+
+  io.analogWrite(SX1509_LED_PIN_9, off);
+  io.analogWrite(SX1509_LED_PIN_13, off);
+}
+void tre()
+{
+
+
+  io.analogWrite(SX1509_LED_PIN_8, on_left);
+  io.analogWrite(SX1509_LED_PIN_10, on_left);
+  io.analogWrite(SX1509_LED_PIN_12, on_left);
+  io.analogWrite(SX1509_LED_PIN_11, on_left);
+  io.analogWrite(SX1509_LED_PIN_9, on_left);
+
+  io.analogWrite(SX1509_LED_PIN_14, off);
+  io.analogWrite(SX1509_LED_PIN_13, off);
+}
+
+void quattro()
+{
+
+
+
+  io.analogWrite(SX1509_LED_PIN_10, on_left);
+  io.analogWrite(SX1509_LED_PIN_12, on_left);
+  io.analogWrite(SX1509_LED_PIN_13, on_left);
+  io.analogWrite(SX1509_LED_PIN_9, on_left);
+
+  io.analogWrite(SX1509_LED_PIN_8, off);
+  io.analogWrite(SX1509_LED_PIN_14, off);
+  io.analogWrite(SX1509_LED_PIN_11, off);
+}
+
+void cinque()
+{
+  io.analogWrite(SX1509_LED_PIN_8, on_left);
+  io.analogWrite(SX1509_LED_PIN_10, on_left);
+  io.analogWrite(SX1509_LED_PIN_13, on_left);
+  io.analogWrite(SX1509_LED_PIN_11, on_left);
+  io.analogWrite(SX1509_LED_PIN_9, on_left);
+
+  io.analogWrite(SX1509_LED_PIN_14, off);
+  io.analogWrite(SX1509_LED_PIN_12, off);
+}
+
+void six()
+{
+
+
+  io.analogWrite(SX1509_LED_PIN_8, on_left);
+  io.analogWrite(SX1509_LED_PIN_10, on_left);
+  io.analogWrite(SX1509_LED_PIN_13, on_left);
+  io.analogWrite(SX1509_LED_PIN_11, on_left);
+  io.analogWrite(SX1509_LED_PIN_9, on_left);
+  io.analogWrite(SX1509_LED_PIN_14, on_left);
+
+  io.analogWrite(SX1509_LED_PIN_12, off);
+}
+void sette()
+{
+
+  io.analogWrite(SX1509_LED_PIN_11, on_left);
+  io.analogWrite(SX1509_LED_PIN_12, on_left);
+  io.analogWrite(SX1509_LED_PIN_9, on_left);
+
+  io.analogWrite(SX1509_LED_PIN_8, off);
+  io.analogWrite(SX1509_LED_PIN_10, off);
+  io.analogWrite(SX1509_LED_PIN_13, off);
+  io.analogWrite(SX1509_LED_PIN_14, off);
+}
+void otto()
+{
+
+  io.analogWrite(SX1509_LED_PIN_8, on_left);
+  io.analogWrite(SX1509_LED_PIN_10, on_left);
+  io.analogWrite(SX1509_LED_PIN_13, on_left);
+  io.analogWrite(SX1509_LED_PIN_11, on_left);
+  io.analogWrite(SX1509_LED_PIN_9, on_left);
+  io.analogWrite(SX1509_LED_PIN_14, on_left);
+
+  io.analogWrite(SX1509_LED_PIN_12, on_left);
+}
+void nove()
+{
+
+  io.analogWrite(SX1509_LED_PIN_13, on_left);
+  io.analogWrite(SX1509_LED_PIN_11, on_left);
+  io.analogWrite(SX1509_LED_PIN_9, on_left);
+  io.analogWrite(SX1509_LED_PIN_10, on_left);
+  io.analogWrite(SX1509_LED_PIN_12, on_left);
+
+  io.analogWrite(SX1509_LED_PIN_8, off);
+  io.analogWrite(SX1509_LED_PIN_14, off);
+
+}
+void zero()
+{
+
+  io.analogWrite(SX1509_LED_PIN_13, on_left);
+  io.analogWrite(SX1509_LED_PIN_11, on_left);
+  io.analogWrite(SX1509_LED_PIN_9, on_left);
+  io.analogWrite(SX1509_LED_PIN_14, on_left);
+  io.analogWrite(SX1509_LED_PIN_12, on_left);
+
+  io.analogWrite(SX1509_LED_PIN_8, on_left);
+  
+  io.analogWrite(SX1509_LED_PIN_10, off);
+
+}
+
 
 void loop() {
 
@@ -188,17 +326,42 @@ void loop() {
   // delay(1000);
 
   //on buttom left
-  for(int i=0; i<num_arms; i++){
-    io.analogWrite(clock_arms[i], on_left);
-    // delay(50);
-  }
+ // for(int i=0; i<num_arms; i++){
+  //  io.analogWrite(clock_arms[i], on_left);
+  //  delay(50);
+  //}
+  zero();
+  delay(1000);
+  one();
+  delay(1000);
+  due();
+  delay(1000);
+  tre();
+  delay(1000);
+  quattro();
+  delay(1000);
+  cinque();
+  delay(1000);
+  six();
+  delay(1000);
+  sette();
+  delay(1000);
+  otto();
+  delay(1000);
+  nove();
+  //io.analogWrite(SX1509_LED_PIN_8, on_left);
 
-  delay(1000);
-  for(int i=0; i<num_arms; i++){
-    io.analogWrite(clock_arms[i], off);
-    // delay(50);
-  }
-  delay(1000);
+  //io.analogWrite(SX1509_LED_PIN_8, on_left);
+
+  //io.analogWrite(SX1509_LED_PIN_8, off);
+  delay(5000);
+
+  //io.analogWrite(SX1509_LED_PIN_8, off);
+  //for(int i=0; i<num_arms; i++){
+  //  io.analogWrite(clock_arms[i], off);
+  //  delay(50);
+  //}
+  //delay(1000);
   // io.analogWrite(SX1509_LED_PIN_12, on_left);
   //
   // // io.analogWrite(SX1509_LED_PIN_8, 255-on_left);
